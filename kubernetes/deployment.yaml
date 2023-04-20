@@ -17,6 +17,7 @@ spec:
       namespace: folder4study
       labels:
         app: prometheus
+        version: latest
     spec:
       containers:
         - name: prometheus
