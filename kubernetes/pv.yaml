@@ -1,0 +1,17 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+    version: latest
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    type: DirectoryOrCreate
+    path: /run/desktop/mnt/host/c/VolumesDisk/prometheus

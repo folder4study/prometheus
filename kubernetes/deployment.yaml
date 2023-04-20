@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: folder4study
+  labels:
+    app: prometheus
+    version: latest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      name: prometheus
+      namespace: folder4study
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.33.1
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - name: port
+              containerPort: 9090
+              protocol: TCP
+          volumeMounts:
+            - name: configmap
+              mountPath: /etc/prometheus/
+            - name: pv
+              mountPath: /prometheus/
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+      volumes:
+        - name: configmap
+          configMap:
+            name: prometheus
+        - name: pv
+          persistentVolumeClaim:
+            claimName: prometheus
